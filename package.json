@@ -1,0 +1,26 @@
+{
+  "name": "simple-diff",
+  "version": "0.0.1",
+  "description": "simple diff for object and arrays with id",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redexp/simple-diff.git"
+  },
+  "keywords": [
+    "diff"
+  ],
+  "author": "Sergii Kliuchnyk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/redexp/simple-diff/issues"
+  },
+  "homepage": "https://github.com/redexp/simple-diff#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  }
+}
