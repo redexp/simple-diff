@@ -1,0 +1,20 @@
+{
+  "name": "backbone-dom-view",
+  "main": "backbone-dom-view.js",
+  "version": "1.0.1",
+  "homepage": "https://github.com/redexp/simple-diff",
+  "authors": [
+    "Sergii Kliuchnyk <sergiikliuchnyk@gmail.com>"
+  ],
+  "description": "simple diff for object and arrays with options",
+  "keywords": [
+    "diff"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "test"
+  ],
+  "dependencies": {},
+  "devDependencies": {}
+}
