@@ -10,6 +10,8 @@
 
     var UNDEFINED;
 
+    var _DEV_ = true;
+
     function diff(oldObj, newObj, ops) {
         ops = ops || {};
 
@@ -20,13 +22,27 @@
             ADD_EVENT = ops.addEvent || 'add',
             REMOVE_EVENT = ops.removeEvent || 'remove',
             CHANGE_EVENT = ops.changeEvent || 'change',
-            MOVE_EVENT = ops.moveEvent || 'move',
+            ADD_ITEM_EVENT = ops.addItemEvent || 'add-item',
+            REMOVE_ITEM_EVENT = ops.removeItemEvent || 'remove-item',
+            MOVE_ITEM_EVENT = ops.moveItemEvent || 'move-item',
             callback = ops.callback || function (item) {
                 changes.push(item);
             },
             i, len, prop, id, newIndex;
 
+        if (_DEV_) {
+            if (!isObject(oldObj) || !isObject(newObj)) {
+                throw new Error('All arguments should be an objects ' + oldPath.join('.'));
+            }
+        }
+
         if (isArray(oldObj)) {
+            if (_DEV_) {
+                if (!isArray(newObj)) {
+                    throw new Error('new object is not an array');
+                }
+            }
+
             var sample = oldObj.length > 0 ? oldObj[0] : newObj[0];
 
             if (sample === UNDEFINED) return changes;
@@ -45,11 +61,17 @@
                     id = oldObj[i][idProp];
                     newIndex = newObj.indexOf(newHash[id]);
 
+                    if (_DEV_) {
+                        if (typeof id === 'undefined') {
+                            console.error('item #%s do not has "%s" property in array %s', i, idProp, oldPath.join('.'));
+                        }
+                    }
+
                     if (newIndex === -1 || i >= newObj.length || id !== newObj[i][idProp]) {
                         callback({
                             oldPath: oldPath,
                             newPath: newPath,
-                            type: newIndex === -1 ? REMOVE_EVENT : MOVE_EVENT,
+                            type: newIndex === -1 ? REMOVE_ITEM_EVENT : MOVE_ITEM_EVENT,
                             oldIndex: i,
                             newIndex: newIndex
                         });
@@ -65,11 +87,17 @@
                 }
 
                 for (i = 0, len = newObj.length; i < len; i++) {
+                    if (_DEV_) {
+                        if (typeof newObj[i][idProp] === 'undefined') {
+                            console.error('item #%s do not has "%s" property in array %s', i, idProp, newPath.join('.'));
+                        }
+                    }
+
                     if (!oldHash.hasOwnProperty(newObj[i][idProp])) {
                         callback({
                             oldPath: oldPath,
                             newPath: newPath,
-                            type: ADD_EVENT,
+                            type: ADD_ITEM_EVENT,
                             oldIndex: -1,
                             newIndex: i,
                             newValue: newObj[i]
@@ -89,7 +117,7 @@
                         callback({
                             oldPath: oldPath,
                             newPath: newPath,
-                            type: newIndex === -1 ? REMOVE_EVENT : MOVE_EVENT,
+                            type: newIndex === -1 ? REMOVE_ITEM_EVENT : MOVE_ITEM_EVENT,
                             oldIndex: i,
                             newIndex: newIndex
                         });
@@ -105,7 +133,7 @@
                         callback({
                             oldPath: oldPath,
                             newPath: newPath,
-                            type: ADD_EVENT,
+                            type: ADD_ITEM_EVENT,
                             oldIndex: -1,
                             newIndex: i,
                             newValue: newObj[i]

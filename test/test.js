@@ -1,5 +1,5 @@
 var expect = require('chai').expect,
-    diff = require('../index'),
+    diff = require('../simple-diff'),
     undefined;
 
 describe('diff', function () {
@@ -138,28 +138,28 @@ describe('diff', function () {
             {
                 oldPath: [],
                 newPath: [],
-                type: 'move',
+                type: 'move-item',
                 oldIndex: 0,
                 newIndex: 2
             },
             {
                 oldPath: [],
                 newPath: [],
-                type: 'move',
+                type: 'move-item',
                 oldIndex: 2,
                 newIndex: 0
             },
             {
                 oldPath: [],
                 newPath: [],
-                type: 'remove',
+                type: 'remove-item',
                 oldIndex: 3,
                 newIndex: -1
             },
             {
                 oldPath: [],
                 newPath: [],
-                type: 'add',
+                type: 'add-item',
                 oldIndex: -1,
                 newIndex: 3,
                 newValue: {
@@ -190,28 +190,28 @@ describe('diff', function () {
             {
                 oldPath: [],
                 newPath: [],
-                type: 'move',
+                type: 'move-item',
                 oldIndex: 0,
                 newIndex: 2
             },
             {
                 oldPath: [],
                 newPath: [],
-                type: 'move',
+                type: 'move-item',
                 oldIndex: 2,
                 newIndex: 0
             },
             {
                 oldPath: [],
                 newPath: [],
-                type: 'remove',
+                type: 'remove-item',
                 oldIndex: 3,
                 newIndex: -1
             },
             {
                 oldPath: [],
                 newPath: [],
-                type: 'add',
+                type: 'add-item',
                 oldIndex: -1,
                 newIndex: 3,
                 newValue: 'five'
@@ -250,42 +250,42 @@ describe('diff', function () {
             {
                 oldPath: [],
                 newPath: [],
-                type: 'move',
+                type: 'move-item',
                 oldIndex: 0,
                 newIndex: 1
             },
             {
                 oldPath: [],
                 newPath: [],
-                type: 'remove',
+                type: 'remove-item',
                 oldIndex: 1,
                 newIndex: -1
             },
             {
                 oldPath: [],
                 newPath: [],
-                type: 'move',
+                type: 'move-item',
                 oldIndex: 2,
                 newIndex: 0
             },
             {
                 oldPath: [],
                 newPath: [],
-                type: 'move',
+                type: 'move-item',
                 oldIndex: 6,
                 newIndex: 4
             },
             {
                 oldPath: [],
                 newPath: [],
-                type: 'remove',
+                type: 'remove-item',
                 oldIndex: 7,
                 newIndex: -1
             },
             {
                 oldPath: [],
                 newPath: [],
-                type: 'add',
+                type: 'add-item',
                 oldIndex: -1,
                 newIndex: 8,
                 newValue: 11
@@ -313,14 +313,14 @@ describe('diff', function () {
             {
                 oldPath: ['prop'],
                 newPath: ['prop'],
-                type: 'remove',
+                type: 'remove-item',
                 oldIndex: 0,
                 newIndex: -1
             },
             {
                 oldPath: ['prop'],
                 newPath: ['prop'],
-                type: 'add',
+                type: 'add-item',
                 oldIndex: -1,
                 newIndex: 1,
                 newValue: 3
@@ -388,21 +388,21 @@ describe('diff', function () {
             {
                 oldPath: ['prop1', 'prop2'],
                 newPath: ['prop1', 'prop2'],
-                type: 'move',
+                type: 'move-item',
                 oldIndex: 0,
                 newIndex: 1
             },
             {
                 oldPath: ['prop1', 'prop2', 0, 'prop3'],
                 newPath: ['prop1', 'prop2', 1, 'prop3'],
-                type: 'move',
+                type: 'move-item',
                 oldIndex: 0,
                 newIndex: 1
             },
             {
                 oldPath: ['prop1', 'prop2', 0, 'prop3'],
                 newPath: ['prop1', 'prop2', 1, 'prop3'],
-                type: 'move',
+                type: 'move-item',
                 oldIndex: 1,
                 newIndex: 0
             },
@@ -416,7 +416,7 @@ describe('diff', function () {
             {
                 oldPath: ['prop1', 'prop2'],
                 newPath: ['prop1', 'prop2'],
-                type: 'move',
+                type: 'move-item',
                 oldIndex: 1,
                 newIndex: 0
             }

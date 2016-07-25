@@ -1,8 +1,8 @@
 {
   "name": "simple-diff",
-  "version": "0.0.1",
-  "description": "simple diff for object and arrays with id",
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "simple diff for object and arrays with options",
+  "main": "simple-diff.js",
   "scripts": {
     "test": "mocha -R spec"
   },
@@ -21,6 +21,10 @@
   "homepage": "https://github.com/redexp/simple-diff#readme",
   "devDependencies": {
     "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-uglify": "^1.5.4",
     "mocha": "^2.5.3"
   }
 }
