@@ -2,6 +2,9 @@ simple-diff
 ===========
 
 Lib for simple diff with options
+
+[![Build Status](https://travis-ci.org/redexp/simple-diff.svg?branch=master)](https://travis-ci.org/redexp/simple-diff)
+
 ```javascript
 var oldObject = {
     prop1: 'value1',

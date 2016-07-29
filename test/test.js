@@ -422,4 +422,18 @@ describe('diff', function () {
             }
         ]);
     });
+
+    it('should compare non object', function () {
+        var changes = diff({test: 1}, 'test');
+
+        expect(changes).to.deep.equal([
+            {
+                type: 'change',
+                oldPath: [],
+                newPath: [],
+                oldValue: {test: 1},
+                newValue: 'test'
+            }
+        ]);
+    });
 });

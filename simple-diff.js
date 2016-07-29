@@ -30,9 +30,17 @@
             },
             i, len, prop, id, newIndex;
 
-        if (_DEV_) {
-            if (!isObject(oldObj) || !isObject(newObj)) {
-                throw new Error('All arguments should be an objects ' + oldPath.join('.'));
+        if (!isObject(oldObj) || !isObject(newObj)) {
+            if (oldObj !== newObj) {
+                callback({
+                    oldPath: oldPath,
+                    newPath: newPath,
+                    type: CHANGE_EVENT,
+                    oldValue: oldObj,
+                    newValue: newObj
+                });
+
+                return changes;
             }
         }
 
