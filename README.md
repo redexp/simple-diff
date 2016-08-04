@@ -1,7 +1,7 @@
 simple-diff
 ===========
 
-Lib for simple diff with moved items in array detection
+Lib for simple diff with detection of moved items in array
 
 [![Build Status](https://travis-ci.org/redexp/simple-diff.svg?branch=master)](https://travis-ci.org/redexp/simple-diff)
 
