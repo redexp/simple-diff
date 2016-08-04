@@ -28,7 +28,7 @@
             callback = ops.callback || function (item) {
                 changes.push(item);
             },
-            i, len, prop, id, newIndex;
+            i, len, prop, id;
 
         if (!isObject(oldObj) || !isObject(newObj)) {
             if (oldObj !== newObj) {
@@ -55,99 +55,87 @@
 
             if (sample === UNDEFINED) return changes;
 
-            if (typeof sample === 'object') {
-                var idProp =
-                        (ops.idProps &&
-                        (
-                            ops.idProps[oldPath.map(numberToAsterisk).join('.')] ||
-                            ops.idProps[oldPath.join('.')]
-                        )) || ID_PROP,
-                    oldHash = indexBy(oldObj, idProp),
-                    newHash = indexBy(newObj, idProp);
+            var objective = typeof sample === 'object';
 
-                for (i = 0, len = oldObj.length; i < len; i++) {
-                    id = oldObj[i][idProp];
-                    newIndex = newObj.indexOf(newHash[id]);
+            var idProp =
+                    (objective && ops.idProps &&
+                    (
+                        ops.idProps[oldPath.map(numberToAsterisk).join('.')] ||
+                        ops.idProps[oldPath.join('.')]
+                    )) || ID_PROP,
+                oldHash = objective ? indexBy(oldObj, idProp) : hashOf(oldObj),
+                newHash = objective ? indexBy(newObj, idProp) : hashOf(newObj),
+                curArray = [].concat(oldObj),
+                curIndex, oldIndex;
 
-                    if (_DEV_) {
-                        if (typeof id === 'undefined') {
-                            console.error('item #%s do not has "%s" property in array %s', i, idProp, oldPath.join('.'));
-                        }
-                    }
+            for (i = 0, len = oldObj.length; i < len; i++) {
+                id = objective ? oldObj[i][idProp] : oldObj[i];
 
-                    if (newIndex === -1 || i >= newObj.length || id !== newObj[i][idProp]) {
-                        callback({
-                            oldPath: oldPath,
-                            newPath: newPath,
-                            type: newIndex === -1 ? REMOVE_ITEM_EVENT : MOVE_ITEM_EVENT,
-                            oldIndex: i,
-                            newIndex: newIndex
-                        });
-                    }
+                if (!newHash.hasOwnProperty(id)) {
+                    curIndex = curArray.indexOf(oldObj[i]);
+                    curArray.splice(curIndex, 1);
 
-                    if (newHash.hasOwnProperty(id)) {
-                        diff(oldObj[i], newHash[id], extend({}, ops, {
-                            callback: callback,
-                            oldPath: oldPath.concat(i),
-                            newPath: newPath.concat(newIndex)
-                        }));
-                    }
+                    callback({
+                        oldPath: oldPath,
+                        newPath: newPath,
+                        type: REMOVE_ITEM_EVENT,
+                        oldIndex: i,
+                        curIndex: curIndex,
+                        newIndex: -1
+                    });
                 }
+            }
 
-                for (i = 0, len = newObj.length; i < len; i++) {
-                    if (_DEV_) {
-                        if (typeof newObj[i][idProp] === 'undefined') {
-                            console.error('item #%s do not has "%s" property in array %s', i, idProp, newPath.join('.'));
-                        }
+            for (i = 0, len = newObj.length; i < len; i++) {
+                id = objective ? newObj[i][idProp] : newObj[i];
+
+                if (!oldHash.hasOwnProperty(id)) {
+                    callback({
+                        oldPath: oldPath,
+                        newPath: newPath,
+                        type: ADD_ITEM_EVENT,
+                        oldIndex: -1,
+                        curIndex: -1,
+                        newIndex: i,
+                        newValue: newObj[i]
+                    });
+
+                    if (i >= curArray.length) {
+                        curArray.push(newObj[i]);
                     }
-
-                    if (!oldHash.hasOwnProperty(newObj[i][idProp])) {
-                        callback({
-                            oldPath: oldPath,
-                            newPath: newPath,
-                            type: ADD_ITEM_EVENT,
-                            oldIndex: -1,
-                            newIndex: i,
-                            newValue: newObj[i]
-                        });
+                    else {
+                        curArray.splice(i, 0, newObj[i]);
                     }
                 }
             }
-            else {
-                var oldObjHash = {}, offset = 0;
 
-                for (i = 0, len = oldObj.length; i < len; i++) {
-                    oldObjHash[oldObj[i]] = i;
+            for (i = 0, len = newObj.length; i < len; i++) {
+                id = objective ? newObj[i][idProp] : newObj[i];
 
-                    newIndex = newObj.indexOf(oldObj[i]);
+                if (!oldHash.hasOwnProperty(id)) continue;
 
-                    if (newIndex === -1 || (oldObj[i] !== newObj[i] && oldObj[i] !== newObj[i - offset])) {
-                        callback({
-                            oldPath: oldPath,
-                            newPath: newPath,
-                            type: newIndex === -1 ? REMOVE_ITEM_EVENT : MOVE_ITEM_EVENT,
-                            oldIndex: i,
-                            newIndex: newIndex
-                        });
-                    }
+                oldIndex = oldObj.indexOf(oldHash[id]);
+                curIndex = curArray.indexOf(oldHash[id]);
 
-                    if (newIndex === -1) {
-                        offset++;
-                    }
+                if (i !== curIndex) {
+                    callback({
+                        oldPath: oldPath,
+                        newPath: newPath,
+                        type: MOVE_ITEM_EVENT,
+                        oldIndex: oldIndex,
+                        curIndex: curIndex,
+                        newIndex: i
+                    });
+
+                    curArray.splice(curIndex, 1);
+                    curArray.splice(i, 0, oldHash[id]);
                 }
 
-                for (i = 0, len = newObj.length; i < len; i++) {
-                    if (!oldObjHash.hasOwnProperty(newObj[i])) {
-                        callback({
-                            oldPath: oldPath,
-                            newPath: newPath,
-                            type: ADD_ITEM_EVENT,
-                            oldIndex: -1,
-                            newIndex: i,
-                            newValue: newObj[i]
-                        });
-                    }
-                }
+                diff(oldHash[id], newObj[i], extend({}, ops, {
+                    callback: callback,
+                    oldPath: oldPath.concat(oldIndex),
+                    newPath: newPath.concat(i)
+                }));
             }
         }
         else {
@@ -219,6 +207,16 @@
 
         for (var i = 0, len = array.length; i < len; i++) {
             hash[array[i][id]] = array[i];
+        }
+
+        return hash;
+    }
+
+    function hashOf(array) {
+        var hash = {};
+
+        for (var i = 0, len = array.length; i < len; i++) {
+            hash[array[i]] = array[i];
         }
 
         return hash;

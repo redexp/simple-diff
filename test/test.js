@@ -138,22 +138,9 @@ describe('diff', function () {
             {
                 oldPath: [],
                 newPath: [],
-                type: 'move-item',
-                oldIndex: 0,
-                newIndex: 2
-            },
-            {
-                oldPath: [],
-                newPath: [],
-                type: 'move-item',
-                oldIndex: 2,
-                newIndex: 0
-            },
-            {
-                oldPath: [],
-                newPath: [],
                 type: 'remove-item',
                 oldIndex: 3,
+                curIndex: 3,
                 newIndex: -1
             },
             {
@@ -161,11 +148,28 @@ describe('diff', function () {
                 newPath: [],
                 type: 'add-item',
                 oldIndex: -1,
+                curIndex: -1,
                 newIndex: 3,
                 newValue: {
                     id: 5,
                     prop: 'value5'
                 }
+            },
+            {
+                oldPath: [],
+                newPath: [],
+                type: 'move-item',
+                oldIndex: 2,
+                curIndex: 2,
+                newIndex: 0
+            },
+            {
+                oldPath: [],
+                newPath: [],
+                type: 'move-item',
+                oldIndex: 1,
+                curIndex: 2,
+                newIndex: 1
             }
         ]);
     });
@@ -190,22 +194,9 @@ describe('diff', function () {
             {
                 oldPath: [],
                 newPath: [],
-                type: 'move-item',
-                oldIndex: 0,
-                newIndex: 2
-            },
-            {
-                oldPath: [],
-                newPath: [],
-                type: 'move-item',
-                oldIndex: 2,
-                newIndex: 0
-            },
-            {
-                oldPath: [],
-                newPath: [],
                 type: 'remove-item',
                 oldIndex: 3,
+                curIndex: 3,
                 newIndex: -1
             },
             {
@@ -213,8 +204,25 @@ describe('diff', function () {
                 newPath: [],
                 type: 'add-item',
                 oldIndex: -1,
+                curIndex: -1,
                 newIndex: 3,
                 newValue: 'five'
+            },
+            {
+                oldPath: [],
+                newPath: [],
+                type: 'move-item',
+                oldIndex: 2,
+                curIndex: 2,
+                newIndex: 0
+            },
+            {
+                oldPath: [],
+                newPath: [],
+                type: 'move-item',
+                oldIndex: 1,
+                curIndex: 2,
+                newIndex: 1
             }
         ]);
     });
@@ -234,15 +242,17 @@ describe('diff', function () {
                 10
             ],
             [
+                11,
                 3,
                 1,
                 4,
                 5,
+                13,
                 7,
                 6,
                 9,
                 10,
-                11
+                12
             ]
         );
 
@@ -250,36 +260,17 @@ describe('diff', function () {
             {
                 oldPath: [],
                 newPath: [],
-                type: 'move-item',
-                oldIndex: 0,
-                newIndex: 1
-            },
-            {
-                oldPath: [],
-                newPath: [],
                 type: 'remove-item',
                 oldIndex: 1,
+                curIndex: 1,
                 newIndex: -1
-            },
-            {
-                oldPath: [],
-                newPath: [],
-                type: 'move-item',
-                oldIndex: 2,
-                newIndex: 0
-            },
-            {
-                oldPath: [],
-                newPath: [],
-                type: 'move-item',
-                oldIndex: 6,
-                newIndex: 4
             },
             {
                 oldPath: [],
                 newPath: [],
                 type: 'remove-item',
                 oldIndex: 7,
+                curIndex: 6,
                 newIndex: -1
             },
             {
@@ -287,8 +278,43 @@ describe('diff', function () {
                 newPath: [],
                 type: 'add-item',
                 oldIndex: -1,
-                newIndex: 8,
+                curIndex: -1,
+                newIndex: 0,
                 newValue: 11
+            },
+            {
+                oldPath: [],
+                newPath: [],
+                type: 'add-item',
+                oldIndex: -1,
+                curIndex: -1,
+                newIndex: 5,
+                newValue: 13
+            },
+            {
+                oldPath: [],
+                newPath: [],
+                type: 'add-item',
+                oldIndex: -1,
+                curIndex: -1,
+                newIndex: 10,
+                newValue: 12
+            },
+            {
+                oldPath: [],
+                newPath: [],
+                type: 'move-item',
+                oldIndex: 2,
+                curIndex: 2,
+                newIndex: 1
+            },
+            {
+                oldPath: [],
+                newPath: [],
+                type: 'move-item',
+                oldIndex: 6,
+                curIndex: 7,
+                newIndex: 6
             }
         ]);
     });
@@ -315,6 +341,7 @@ describe('diff', function () {
                 newPath: ['prop'],
                 type: 'remove-item',
                 oldIndex: 0,
+                curIndex: 0,
                 newIndex: -1
             },
             {
@@ -322,6 +349,7 @@ describe('diff', function () {
                 newPath: ['prop'],
                 type: 'add-item',
                 oldIndex: -1,
+                curIndex: -1,
                 newIndex: 1,
                 newValue: 3
             }
@@ -389,21 +417,16 @@ describe('diff', function () {
                 oldPath: ['prop1', 'prop2'],
                 newPath: ['prop1', 'prop2'],
                 type: 'move-item',
-                oldIndex: 0,
-                newIndex: 1
-            },
-            {
-                oldPath: ['prop1', 'prop2', 0, 'prop3'],
-                newPath: ['prop1', 'prop2', 1, 'prop3'],
-                type: 'move-item',
-                oldIndex: 0,
-                newIndex: 1
+                oldIndex: 1,
+                curIndex: 1,
+                newIndex: 0
             },
             {
                 oldPath: ['prop1', 'prop2', 0, 'prop3'],
                 newPath: ['prop1', 'prop2', 1, 'prop3'],
                 type: 'move-item',
                 oldIndex: 1,
+                curIndex: 1,
                 newIndex: 0
             },
             {
@@ -412,13 +435,6 @@ describe('diff', function () {
                 type: 'change',
                 oldValue: 'name2',
                 newValue: 'name02'
-            },
-            {
-                oldPath: ['prop1', 'prop2'],
-                newPath: ['prop1', 'prop2'],
-                type: 'move-item',
-                oldIndex: 1,
-                newIndex: 0
             }
         ]);
     });

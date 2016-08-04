@@ -1,7 +1,7 @@
 simple-diff
 ===========
 
-Lib for simple diff with options
+Lib for simple diff with moved items in array detection
 
 [![Build Status](https://travis-ci.org/redexp/simple-diff.svg?branch=master)](https://travis-ci.org/redexp/simple-diff)
 
@@ -67,43 +67,46 @@ Output
         newValue: 'value01'
     },
     {
-        oldPath: ['prop1'],
-        newPath: ['prop1'],
+        oldPath: ['prop2'],
+        newPath: ['prop2'],
+        type: 'remove-item',
+        oldIndex: 2,
+        curIndex: 2,
+        newIndex: -1
+    },
+    {
+        oldPath: ['prop2'],
+        newPath: ['prop2'],
+        type: 'add-item',
+        oldIndex: -1,
+        curIndex: -1,
+        newIndex: 3,
+        newValue: {
+            id: 5, 
+            name: 'name5'
+        }
+    },
+    {
+        oldPath: ['prop2'],
+        newPath: ['prop2'],
         type: 'move-item',
-        oldIndex: 0,
-        newIndex: 1
+        oldIndex: 1,
+        curIndex: 1,
+        newIndex: 0
     },
     {
-        oldPath: ['prop1', 0, 'name'],
-        newPath: ['prop1', 1, 'name'],
-        type: 'change',
-        oldValue: 'name1',
-        newValue: 'name01'
-    },
-    {
-        oldPath: ['prop1', 1, 'name'],
-        newPath: ['prop1', 0, 'name'],
+        oldPath: ['prop2', 1, 'name'],
+        newPath: ['prop2', 0, 'name'],
         type: 'remove',
         oldValue: 'name2',
         newValue: undefined
     },
     {
-        oldPath: ['prop1'],
-        newPath: ['prop1'],
-        type: 'move-item',
-        oldIndex: 1,
-        newIndex: 0
-    },
-    {
-        oldPath: ['prop1'],
-        newPath: ['prop1'],
-        type: 'add-item',
-        oldIndex: -1,
-        newIndex: 3,
-        newValue: {
-            id: 5,
-            name: 'name5'
-        }
+        oldPath: ['prop2', 0, 'name'],
+        newPath: ['prop2', 1, 'name'],
+        type: 'change',
+        oldValue: 'name1',
+        newValue: 'name01'
     },
     {
         oldPath: ['prop3'],
@@ -114,10 +117,6 @@ Output
     }
 ]
 ```
-
- * Installation
- * Options
- * Examples
  
 # Installation
 
@@ -125,11 +124,13 @@ Output
 
 `bower i simple-diff`
 
+Lib will look for CommonJS or AMD or will be added global function called `simpleDiff()`.
+
 # Options
 
  * `idProp` - id property for all arrays items. Default value: `id`
  * `idProps` - hash where key is path to array and value is id property. Path examples: `users.list`, `user.list.1.friends`, `users.list.*.friends`
- * `callback` - function which will be called for each "change event". When it used diff will return empty array. Useful for memory management.
+ * `callback` - function which will be called for each event. Useful for memory management because in this case diff will not create array of all events.
  * `addEvent` - name of event when new property added to object. Default value: `add`
  * `changeEvent` - name of event when property value changed. Default value: `change`
  * `removeEvent` - name of event when property removed from object. Default value: `remove`
