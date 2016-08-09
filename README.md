@@ -128,13 +128,39 @@ Lib will look for CommonJS or AMD or will be added global function called `simpl
 
 # Options
 
- * `idProp` - id property for all arrays items. Default value: `id`
- * `idProps` - hash where key is path to array and value is id property. Path examples: `users.list`, `user.list.1.friends`, `users.list.*.friends`
- * `callback` - function which will be called for each event. Useful for memory management because in this case diff will not create array of all events.
- * `addEvent` - name of event when new property added to object. Default value: `add`
- * `changeEvent` - name of event when property value changed. Default value: `change`
- * `removeEvent` - name of event when property removed from object. Default value: `remove`
- * `addItemEvent` - name of event when new item added to array. Default value: `add-item`
- * `removeItemEvent` - name of event when item removed from array. Default value: `remove-item`
- * `moveItemEvent` - name of event when item changed it index in array. Default value: `move-item`
+## `idProp: 'id' || '*'`
+
+Property name with unique value in it array. Default value is `id`. If your arrays do not have unique properties then you should set this option as `*` and lib will compare items one by one without trying to find moved items. 
+ 
+## `idProps: {'path': 'propName' || '*'}` 
+
+Hash where key is path to array and value is id property. Path examples: `users.list`, `user.list.1.friends`, `users.list.*.friends`
+
+## `callback: function (event)` 
+
+Function which will be called for each event. If callback is passed then lib will not create array of all changes.
+
+## `addEvent: 'add'`
+
+Name of event when new property added to object. Default value is `add`
+
+## `changeEvent: 'change'` 
+
+Name of event when property value changed. Default value is `change`
+
+## `removeEvent: 'remove'` 
+
+Name of event when property removed from object. Default value is `remove`
+
+## `addItemEvent: 'add-item'` 
+
+Name of event when new item added to array. Default value is `add-item`
+
+## `removeItemEvent: 'remove-item'` 
+
+Name of event when item removed from array. Default value is `remove-item`
+
+## `moveItemEvent: 'move-item'` 
+
+Name of event when item changed it index in array. Default value is `move-item`
 

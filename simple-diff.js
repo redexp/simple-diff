@@ -51,19 +51,58 @@
                 }
             }
 
+            var idProp =
+                    (ops.idProps &&
+                    (
+                        ops.idProps[oldPath.map(numberToAsterisk).join('.')] ||
+                        ops.idProps[oldPath.join('.')]
+                    )) || ID_PROP;
+
+            if (idProp === '*') {
+                var oldLength = oldObj.length,
+                    newLength = newObj.length;
+
+                for (i = 0, len = oldLength > newLength ? oldLength : newLength; i < len; i++) {
+                    if (i < oldLength && i < newLength) {
+                        diff(oldObj[i], newObj[i], extend({}, ops, {
+                            callback: callback,
+                            oldPath: oldPath.concat(i),
+                            newPath: newPath.concat(i)
+                        }));
+                    }
+                    else if (i >= oldLength) {
+                        callback({
+                            oldPath: oldPath,
+                            newPath: newPath,
+                            type: ADD_ITEM_EVENT,
+                            oldIndex: -1,
+                            curIndex: -1,
+                            newIndex: i,
+                            newValue: newObj[i]
+                        });
+                    }
+                    else if (i >= newLength) {
+                        callback({
+                            oldPath: oldPath,
+                            newPath: newPath,
+                            type: REMOVE_ITEM_EVENT,
+                            oldIndex: i,
+                            curIndex: newLength,
+                            newIndex: -1
+                        });
+                    }
+                }
+
+                return changes;
+            }
+
             var sample = oldObj.length > 0 ? oldObj[0] : newObj[0];
 
             if (sample === UNDEFINED) return changes;
 
             var objective = typeof sample === 'object';
 
-            var idProp =
-                    (objective && ops.idProps &&
-                    (
-                        ops.idProps[oldPath.map(numberToAsterisk).join('.')] ||
-                        ops.idProps[oldPath.join('.')]
-                    )) || ID_PROP,
-                oldHash = objective ? indexBy(oldObj, idProp) : hashOf(oldObj),
+            var oldHash = objective ? indexBy(oldObj, idProp) : hashOf(oldObj),
                 newHash = objective ? indexBy(newObj, idProp) : hashOf(newObj),
                 curArray = [].concat(oldObj),
                 curIndex, oldIndex;

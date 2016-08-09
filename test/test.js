@@ -452,4 +452,92 @@ describe('diff', function () {
             }
         ]);
     });
+
+    it('should handle idProp: * to compare arrays as is', function () {
+        var changes = diff(
+            [
+                {a: 1},
+                {a: 2}
+            ],
+            [
+                {a: 1},
+                {a: 2}
+            ],
+            {idProp: '*'}
+        );
+
+        expect(changes.length).to.equal(0);
+
+        changes = diff(
+            [
+                {a: 1},
+                {a: 2}
+            ],
+            [
+                {a: 2},
+                {a: 1},
+                {a: 3}
+            ],
+            {idProp: '*'}
+        );
+
+        expect(changes).to.deep.equal([
+            {
+                oldPath: [0, 'a'],
+                newPath: [0, 'a'],
+                type: 'change',
+                oldValue: 1,
+                newValue: 2
+            },
+            {
+                oldPath: [1, 'a'],
+                newPath: [1, 'a'],
+                type: 'change',
+                oldValue: 2,
+                newValue: 1
+            },
+            {
+                oldPath: [],
+                newPath: [],
+                type: 'add-item',
+                oldIndex: -1,
+                curIndex: -1,
+                newIndex: 2,
+                newValue: {a: 3}
+            }
+        ]);
+
+        changes = diff(
+            [
+                {a: 1},
+                {a: 2},
+                {a: 3},
+                {a: 4}
+            ],
+            [
+                {a: 1},
+                {a: 2}
+            ],
+            {idProp: '*'}
+        );
+
+        expect(changes).to.deep.equal([
+            {
+                oldPath: [],
+                newPath: [],
+                type: 'remove-item',
+                oldIndex: 2,
+                curIndex: 2,
+                newIndex: -1
+            },
+            {
+                oldPath: [],
+                newPath: [],
+                type: 'remove-item',
+                oldIndex: 3,
+                curIndex: 2,
+                newIndex: -1
+            }
+        ]);
+    });
 });
