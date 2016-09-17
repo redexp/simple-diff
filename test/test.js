@@ -141,7 +141,11 @@ describe('diff', function () {
                 type: 'remove-item',
                 oldIndex: 3,
                 curIndex: 3,
-                newIndex: -1
+                newIndex: -1,
+                oldValue: {
+                    id: 4,
+                    prop: 'value4'
+                }
             },
             {
                 oldPath: [],
@@ -197,7 +201,8 @@ describe('diff', function () {
                 type: 'remove-item',
                 oldIndex: 3,
                 curIndex: 3,
-                newIndex: -1
+                newIndex: -1,
+                oldValue: 'four'
             },
             {
                 oldPath: [],
@@ -263,7 +268,8 @@ describe('diff', function () {
                 type: 'remove-item',
                 oldIndex: 1,
                 curIndex: 1,
-                newIndex: -1
+                newIndex: -1,
+                oldValue: 2
             },
             {
                 oldPath: [],
@@ -271,7 +277,8 @@ describe('diff', function () {
                 type: 'remove-item',
                 oldIndex: 7,
                 curIndex: 6,
-                newIndex: -1
+                newIndex: -1,
+                oldValue: 8
             },
             {
                 oldPath: [],
@@ -342,7 +349,8 @@ describe('diff', function () {
                 type: 'remove-item',
                 oldIndex: 0,
                 curIndex: 0,
-                newIndex: -1
+                newIndex: -1,
+                oldValue: 1
             },
             {
                 oldPath: ['prop'],
@@ -528,7 +536,8 @@ describe('diff', function () {
                 type: 'remove-item',
                 oldIndex: 2,
                 curIndex: 2,
-                newIndex: -1
+                newIndex: -1,
+                oldValue: {a: 3}
             },
             {
                 oldPath: [],
@@ -536,7 +545,8 @@ describe('diff', function () {
                 type: 'remove-item',
                 oldIndex: 3,
                 curIndex: 2,
-                newIndex: -1
+                newIndex: -1,
+                oldValue: {a: 4}
             }
         ]);
     });

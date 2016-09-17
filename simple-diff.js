@@ -88,7 +88,8 @@
                             type: REMOVE_ITEM_EVENT,
                             oldIndex: i,
                             curIndex: newLength,
-                            newIndex: -1
+                            newIndex: -1,
+                            oldValue: oldObj[i]
                         });
                     }
                 }
@@ -120,7 +121,8 @@
                         type: REMOVE_ITEM_EVENT,
                         oldIndex: i,
                         curIndex: curIndex,
-                        newIndex: -1
+                        newIndex: -1,
+                        oldValue: oldObj[i]
                     });
                 }
             }

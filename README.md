@@ -72,7 +72,11 @@ Output
         type: 'remove-item',
         oldIndex: 2,
         curIndex: 2,
-        newIndex: -1
+        newIndex: -1,
+        oldValue: {
+            id: 3,
+            name: 'name3'
+        }
     },
     {
         oldPath: ['prop2'],
