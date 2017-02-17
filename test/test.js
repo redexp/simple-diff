@@ -634,4 +634,81 @@ describe('diff', function () {
             }
         ]);
     });
+
+    it('should ignore', function () {
+		var changes = diff(
+			{
+				prop: {
+					test1: {
+					    test11: 1
+                    },
+					test2: 1
+				}
+			},
+			{
+				prop: {
+					test1: {
+						test11: 2
+					},
+					test2: 2
+				}
+			},
+			{
+				ignore: function (a, b, ops) {
+					return ops.oldPath.join('.') === 'prop.test1';
+				}
+			}
+		);
+
+		expect(changes).to.deep.equal([
+			{
+				oldPath: ['prop', 'test2'],
+				newPath: ['prop', 'test2'],
+				type: 'change',
+				oldValue: 1,
+				newValue: 2
+			}
+        ]);
+
+		var root = {
+			prop: {
+			    test2: 2
+            }
+        };
+
+		root.prop.test1 = root;
+
+		changes = diff(
+			root,
+			{
+				prop: {
+					test1: {},
+                    test2: 3
+				}
+			},
+			{
+				ignore: function (oldObj, newObj, options) {
+					var parent = root;
+
+					if (options.oldPath.length === 0) return false;
+					if (parent === oldObj) return true;
+
+					return options.oldPath.slice(0, -1).find(function (prop) {
+						parent = parent[prop];
+						return parent === oldObj;
+					});
+				}
+			}
+		);
+
+		expect(changes).to.deep.equal([
+			{
+				oldPath: ['prop', 'test2'],
+				newPath: ['prop', 'test2'],
+				type: 'change',
+				oldValue: 2,
+				newValue: 3
+			}
+		]);
+    });
 });

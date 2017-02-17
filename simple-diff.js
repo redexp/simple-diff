@@ -29,20 +29,23 @@
                 changes.push(item);
             },
             comparators = ops.comparators || [],
+            ignore = ops.ignore,
             i, len, prop, id;
 
-        if (!isObject(oldObj) || !isObject(newObj)) {
-            if (oldObj !== newObj) {
-                callback({
-                    oldPath: oldPath,
-                    newPath: newPath,
-                    type: CHANGE_EVENT,
-                    oldValue: oldObj,
-                    newValue: newObj
-                });
+        if ((!isObject(oldObj) || !isObject(newObj)) && oldObj !== newObj) {
+			callback({
+				oldPath: oldPath,
+				newPath: newPath,
+				type: CHANGE_EVENT,
+				oldValue: oldObj,
+				newValue: newObj
+			});
 
-                return changes;
-            }
+			return changes;
+        }
+
+        if (ignore && ignore(oldObj, newObj, {oldPath: oldPath, newPath: newPath})) {
+			return changes;
         }
 
         if (isArray(oldObj)) {

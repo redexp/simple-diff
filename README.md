@@ -168,6 +168,10 @@ var changes = diff(
 );
 ```
 
+## `ignore: function (oldValue, newValue, options)`
+
+Function which will be called before each object comparison and if returning value will be `true` then objects will be ignored. In `options` will be `oldPath` and `newPath`. Useful to prevent from traversing through circular references and when you don't want to compare some kind of objects at all.
+
 ## `callback: function (event)` 
 
 Function which will be called for each event. If callback is passed then lib will not create array of all changes.
