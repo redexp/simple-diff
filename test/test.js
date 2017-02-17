@@ -1,6 +1,9 @@
 var expect = require('chai').expect,
+    sinon = require('sinon'),
     diff = require('../simple-diff'),
     undefined;
+
+require('chai').use(require('sinon-chai'));
 
 describe('diff', function () {
     it('should find changes in objects', function () {
@@ -547,6 +550,87 @@ describe('diff', function () {
                 curIndex: 2,
                 newIndex: -1,
                 oldValue: {a: 4}
+            }
+        ]);
+    });
+
+    it('should handle comparators: [] to compare custom class objects', function () {
+        var cb = sinon.spy(function (a, b, ops) {
+			expect(a).to.be.instanceOf(Date);
+			expect(b).to.be.instanceOf(Date);
+
+			expect(ops).to.deep.equal({
+				oldPath: ['prop', 'date'],
+				newPath: ['prop', 'date']
+			});
+
+            return a.toString() === b.toString();
+		});
+
+        var changes = diff(
+            {
+                prop: {
+                    test1: {},
+                    test2: [{}],
+                    date: new Date()
+                }
+            },
+            {
+                prop: {
+					test1: {},
+					test2: [{}],
+                    date: new Date()
+                }
+            },
+            {
+                comparators: [
+                    [Date, cb]
+                ]
+            }
+        );
+
+        expect(changes).to.deep.equal([]);
+        expect(cb).to.have.callCount(1);
+
+        var nowDate = new Date();
+        var prevDate = new Date();
+        prevDate.setHours(-1);
+
+		changes = diff(
+			{
+				prop: {
+					test1: 1,
+					date: nowDate
+				}
+			},
+			{
+				prop: {
+					test1: 2,
+					date: prevDate
+				}
+			},
+			{
+				comparators: [
+					[Date, cb]
+				]
+			}
+		);
+
+		expect(cb).to.have.callCount(2);
+		expect(changes).to.deep.equal([
+            {
+                oldPath: ['prop', 'test1'],
+                newPath: ['prop', 'test1'],
+                type: 'change',
+                oldValue: 1,
+                newValue: 2
+            },
+            {
+                oldPath: ['prop', 'date'],
+                newPath: ['prop', 'date'],
+                type: 'change',
+                oldValue: nowDate,
+                newValue: prevDate
             }
         ]);
     });

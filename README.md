@@ -140,6 +140,34 @@ Property name with unique value in it array. Default value is `id`. If your arra
 
 Hash where key is path to array and value is id property. Path examples: `users.list`, `user.list.1.friends`, `users.list.*.friends`
 
+## `comparators: [[Class, function (oldValue, newValue, options)], ...]`
+
+Array of comparators to handle comparison of objects which do not have own properties. For example instead of `user.name` you have `user.getName()` or you need to compare `Date` objects or you just know quick way to compare large objects like by `id` property and you do not need full list of changes of those objects. First value of comparator should be some class and second is function which should return `true` if objects are equal and `false` if they not. In `options` will be `oldPath` and `newPath`.
+```javascript
+var now = new Date();
+var prevHour = new Date();
+prevHour.setHours(-1);
+
+var changes = diff(
+	{
+		createdAt: now
+	},
+	{
+		createdAt: prevHour
+	},
+	{
+		comparators: [
+			[Date, function(oldValue, newValue, options) {
+			    options.oldPath; // ['createdAt']
+			    options.newPath; // ['createdAt']
+			    
+			    return oldValue.toString() === newValue.toString();
+			}]
+		]
+	}
+);
+```
+
 ## `callback: function (event)` 
 
 Function which will be called for each event. If callback is passed then lib will not create array of all changes.

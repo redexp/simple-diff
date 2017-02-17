@@ -28,6 +28,7 @@
             callback = ops.callback || function (item) {
                 changes.push(item);
             },
+            comparators = ops.comparators || [],
             i, len, prop, id;
 
         if (!isObject(oldObj) || !isObject(newObj)) {
@@ -180,6 +181,29 @@
             }
         }
         else {
+            if (comparators.length > 0) {
+                for (i = 0, len = comparators.length; i < len; i++) {
+                    if (oldObj instanceof comparators[i][0] === false && newObj instanceof comparators[i][0] === false) continue;
+
+                    var objEqual = comparators[i][1](oldObj, newObj, {
+                        oldPath: oldPath,
+                        newPath: newPath
+                    });
+
+                    if (!objEqual) {
+						callback({
+							oldPath: oldPath,
+							newPath: newPath,
+							type: CHANGE_EVENT,
+							oldValue: oldObj,
+							newValue: newObj
+						});
+                    }
+
+					return changes;
+				}
+            }
+
             for (prop in oldObj) {
                 if (!oldObj.hasOwnProperty(prop)) continue;
 
