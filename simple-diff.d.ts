@@ -28,4 +28,7 @@ export interface DiffEvent extends PathChange {
 	type: 'add' | 'remove' | 'change' | 'add-item' | 'remove-item' | 'move-item',
 	oldValue: any,
 	newValue: any,
+	oldIndex?: number,
+	curIndex?: number,
+	newIndex?: number,
 }
