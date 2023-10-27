@@ -4,6 +4,7 @@ export default diff;
 
 export interface DiffOptions extends Partial<PathChange> {
 	idProp?: string,
+	idProps?: {[path: string]: string},
 	addEvent?: string,
 	removeEvent?: string,
 	changeEvent?: string,

@@ -1,6 +1,6 @@
 {
   "name": "simple-diff",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "simple diff for object and arrays with options",
   "main": "simple-diff.js",
   "types": "simple-diff.d.ts",
